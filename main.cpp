@@ -14,10 +14,7 @@ int main(int argc, const char *argv[]) {
 	bool runAsDaemon = false;
 
 	const char *shortOptions = "dp:";
-	const option longOptions[] = {
-		{"daemon", no_argument, nullptr, 'd'},
-		{"port", required_argument, nullptr, 'p'},
-		{nullptr, 0, nullptr, 0}};
+	const option longOptions[] = {{"daemon", no_argument, nullptr, 'd'}, {"port", required_argument, nullptr, 'p'}, {nullptr, 0, nullptr, 0}};
 
 	int option;
 	while ((option = getopt_long(argc, const_cast<char *const *>(argv), shortOptions, longOptions, nullptr)) != -1) {
@@ -31,7 +28,7 @@ int main(int argc, const char *argv[]) {
 		case '?':
 		default:
 			std::cerr << "Usage: daecon [-d] [-p port] [message_type sender_info message_content]" << std::endl;
-			return EXIT_FAILURE;
+			return false;
 		}
 	}
 
@@ -43,7 +40,7 @@ int main(int argc, const char *argv[]) {
 			arg3 = argv[optind++];
 		} else {
 			std::cerr << "Usage: daecon [-d] [-p port] [message_type sender_info message_content]" << std::endl;
-			return EXIT_FAILURE;
+			return false;
 		}
 	}
 
@@ -59,8 +56,8 @@ int main(int argc, const char *argv[]) {
 
 	} catch (const std::exception &e) {
 		std::cerr << "Error: " << e.what() << std::endl;
-		return EXIT_FAILURE;
+		return false;
 	}
 
-	return EXIT_SUCCESS;
+	return true;
 }

@@ -114,15 +114,15 @@ bool processMessage(std::string &rawMessage) {
 			std::string messageType = arguments[0];
 			std::string senderInfo = arguments[1];
 			std::string messageContent = arguments[2];
-			std::string messageTime = arguments[3];
-			message = createColoredMessage(std::stoi(messageType), senderInfo, messageContent, messageTime);
+
+			message = createMessage(std::stoi(messageType), senderInfo, messageContent, true);
 			logs.push_back(message);
 			std::cout << message;
 
 			std::ofstream logFile(logFilePath, std::ios::app);
 			if (!logFile.is_open())
 				throw std::runtime_error("Error opening log file: " + std::string(logFilePath));
-			logFile << messageTime << ' ' << senderInfo << ": " << messageContent << '\n';
+			logFile << createMessage(std::stoi(messageType), senderInfo, messageContent, false);
 		}
 	} catch (const std::exception &e) {
 		std::cerr << "Error processing message: " << e.what() << '\n';
@@ -132,7 +132,7 @@ bool processMessage(std::string &rawMessage) {
 	return true;
 }
 
-std::string createColoredMessage(int messageType, const std::string &senderInfo, const std::string &messageContent, const std::string &messageTime) {
+std::string createMessage(int messageType, const std::string &senderInfo, const std::string &messageContent, bool color) {
 	std::string type;
 	std::string colorCode;
 	switch (messageType) {
@@ -156,5 +156,13 @@ std::string createColoredMessage(int messageType, const std::string &senderInfo,
 		throw std::invalid_argument("Invalid message type");
 	}
 
-	return colorCode + messageTime + type + senderInfo + ": " + messageContent + RESET + '\n';
+	std::time_t currentTime = std::time(nullptr);
+	std::tm *localTime = std::localtime(&currentTime);
+	char formattedTime[20];
+	std::strftime(formattedTime, sizeof(formattedTime), "%F %T", localTime);
+
+	if (color)
+		return colorCode + formattedTime + type + senderInfo + ": " + messageContent + RESET + '\n';
+	else
+		return formattedTime + type + senderInfo + ": " + messageContent + '\n';
 }
