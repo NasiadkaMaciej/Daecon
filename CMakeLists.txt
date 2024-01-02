@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(Deacon)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # Add the main program, server, client, and error source files
-add_executable(daecon main.cpp server.cpp client.cpp)
+add_executable(daecon main.cpp server.cpp client.cpp config.cpp)

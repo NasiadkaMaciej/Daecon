@@ -7,9 +7,11 @@
 
 #include "client.h"
 #include "server.h"
+#include "config.h"
+
 
 int main(int argc, const char *argv[]) {
-	int port = 12345;
+	readConfig("/etc/daecon/daecon.conf");
 	std::string arg1, arg2, arg3;
 	bool runAsDaemon = false;
 

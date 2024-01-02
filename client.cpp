@@ -7,7 +7,6 @@
 #include <unistd.h>
 
 #include "client.h"
-#include "error.h"
 
 // Define ANSI escape codes for colors
 constexpr const char RED[] = "\x1B[31m";
@@ -78,19 +77,17 @@ bool getLogs(int port) {
 	if (!sockfd)
 		return false;
 
-	while (true) {
-		// Read the response from the daemon (optional)
-		char buffer[BufferSize];
-		bzero(buffer, sizeof(buffer));
-		int n = read(sockfd, buffer, sizeof(buffer) - 1);
-		if (n < 0) {
-			perror("ERROR reading from socket");
-			close(sockfd);
-			return false;
-		} else {
-			std::cout << "Response from daemon: \n" << buffer;
-			return false;
-		}
+	// Read the response from the daemon
+	char buffer[BufferSize];
+	bzero(buffer, sizeof(buffer));
+	int n = read(sockfd, buffer, sizeof(buffer) - 1);
+	if (n < 0) {
+		perror("ERROR reading from socket");
+		close(sockfd);
+		return false;
+	} else {
+		std::cout << "Response from daemon: \n" << buffer;
+		return false;
 	}
 
 	close(sockfd);

@@ -11,8 +11,8 @@
 #include <unistd.h>
 #include <vector>
 
-#include "error.h"
 #include "server.h"
+#include "config.h"
 
 // Define ANSI escape codes for colors
 constexpr const char RED[] = "\x1B[31m";
@@ -20,7 +20,6 @@ constexpr const char YELLOW[] = "\x1B[33m";
 constexpr const char GREEN[] = "\x1B[32m";
 constexpr const char RESET[] = "\x1B[0m";
 
-constexpr const char *logFilePath = "/home/maciej/Development/C++/Daecon/log.txt";
 constexpr int BufferSize = 256;
 constexpr int MaxMessageSize = 255;
 
